@@ -20,6 +20,10 @@ jinja2.filters =
     route_path = pyramid_jinja2.filters:route_path_filter
     static_path = pyramid_jinja2.filters:static_path_filter
 
+# update the settings to meet your needs
+database_path = /YOUR/DB/FILE/PATH
+slack_token = YOUR_SECRET_TOKEN
+
 # session settings
 #
 # using builtin session mechanism
