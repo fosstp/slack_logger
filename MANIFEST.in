@@ -1,0 +1,2 @@
+include *.txt *.ini *.cfg *.rst
+recursive-include slack_logger *.ico *.png *.css *.gif *.jpg *.txt *.js *.html *.htm *.xml *.jinja2

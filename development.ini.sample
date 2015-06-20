@@ -1,0 +1,71 @@
+###
+# app configuration
+# http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/environment.html
+###
+
+[app:main]
+use = egg:slack_logger
+
+pyramid.reload_templates = true
+pyramid.debug_authorization = false
+pyramid.debug_notfound = false
+pyramid.debug_routematch = false
+pyramid.includes =
+    pyramid_debugtoolbar
+
+# activate some useful filters of jinja2
+jinja2.filters =
+    route_url = pyramid_jinja2.filters:route_url_filter
+    static_url = pyramid_jinja2.filters:static_url_filter
+    route_path = pyramid_jinja2.filters:route_path_filter
+    static_path = pyramid_jinja2.filters:static_path_filter
+
+# session settings
+#
+# using builtin session mechanism
+#sessions.secret = 961ad0bc1df084d66ea2c2f8fa358d958c09547f
+
+# By default, the toolbar only appears for clients from IP addresses
+# '127.0.0.1' and '::1'.
+#debugtoolbar.hosts = 127.0.0.1 ::1
+
+###
+# wsgi server configuration
+###
+
+[server:main]
+use = egg:waitress#main
+host = 0.0.0.0
+port = 6543
+
+###
+# logging configuration
+# http://docs.pylonsproject.org/projects/pyramid/en/1.5-branch/narr/logging.html
+###
+
+[loggers]
+keys = root, slack_logger
+
+[handlers]
+keys = console
+
+[formatters]
+keys = generic
+
+[logger_root]
+level = INFO
+handlers = console
+
+[logger_slack_logger]
+level = DEBUG
+handlers =
+qualname = slack_logger
+
+[handler_console]
+class = StreamHandler
+args = (sys.stderr,)
+level = NOTSET
+formatter = generic
+
+[formatter_generic]
+format = %(asctime)s %(levelname)-5.5s [%(name)s][%(threadName)s] %(message)s
