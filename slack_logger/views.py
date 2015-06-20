@@ -11,13 +11,16 @@ def log_view(request):
     post = request.POST
     settings = request.registry.settings
 
-    if (post['token'] == settings['slack_token']) and (post['user_name'] != 'slackbot'):
-        db = sqlite3.connect(settings['database_path'])
-        cursor = db.cursor()
-        insert_data = (request.POST['channel_name'], int(time.time()),
-                       request.POST['user_name'], request.POST['text'])
-        cursor.execute('INSERT INTO log (channel, datetime, user, message) VALUES (?, ?, ?, ?)', insert_data)
-        db.commit()
-        db.close()
+    try:
+        if (post['token'] == settings['slack_token']) and (post['user_name'] != 'slackbot'):
+            db = sqlite3.connect(settings['database_path'])
+            cursor = db.cursor()
+            insert_data = (request.POST['channel_name'], int(time.time()),
+                           request.POST['user_name'], request.POST['text'])
+            cursor.execute('INSERT INTO log (channel, datetime, user, message) VALUES (?, ?, ?, ?)', insert_data)
+            db.commit()
+            db.close()
+    except KeyError:
+        pass
 
     return {}
